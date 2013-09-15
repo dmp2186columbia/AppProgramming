@@ -40,3 +40,14 @@ public:
 
 	void toggle();
 };
+
+class EuropeanBarrierOption : public EuropeanOption
+{
+private:
+	double Price() const;
+	double Delta() const;
+public:
+	double barrier;
+	double rebate;
+	string optType;
+};
