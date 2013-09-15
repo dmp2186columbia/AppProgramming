@@ -3,7 +3,6 @@
 #include <math.h>;
 namespace Stat
 {
-	double const precision = 0.0000001;	//actual precision only up to 10e-6
 	double NormDist::Dist(double x, bool cumulative)
 	{//Standard normal
 		if (cumulative)
@@ -17,15 +16,21 @@ namespace Stat
 				return 1;
 			}
 			else
-			{//very crude estimation, dumb & slow
-				double tempx =-6;
-				double temp  = 0;
-				while (tempx<x)
-				{
-					temp =  temp + precision*((1/sqrt(2*M_PI))*(exp(-tempx*tempx/2)));
-					tempx = tempx + precision;
+			{
+				if (x>=0)
+				{//
+					double k = 1/(1+ 0.2316419*x);
+					double a1 = 0.319381530;
+					double a2 = -0.356563782;
+					double a3 = 1.781477937;
+					double a4 = -1.821255978;
+					double a5 = 1.330274429;
+					return 1 - NormDist::Dist(x,false) * (a1*k+a2*pow(k,2) + a3*pow(k,3) + a4*pow(k,4) + a5*pow(k,5));
 				}
-				return temp;
+				else
+				{
+					return 1- NormDist::Dist(-x,true);
+				}
 			}
 		}
 		else
