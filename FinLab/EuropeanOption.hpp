@@ -15,6 +15,12 @@ private:
 	double	PutDelta() const;
 	double	CallGamma() const;
 	double	PutGamma() const;
+	double  CallTheta() const;
+	double  PutTheta() const;
+	double  CallVega() const;
+	double  PutVega() const;
+	double  CallRho() const;
+	double  PutRho() const;
 	
 
 public:
@@ -37,17 +43,18 @@ public:
 
 	double Price() const;
 	double Delta() const;
+	double Gamma() const;
+	double Theta() const;
+	double Vega()  const;
+	double Rho()   const;
 
 	void toggle();
+	void print();
 };
 
 class EuropeanBarrierOption : public EuropeanOption
 {
-private:
-	double Price() const;
-	double Delta() const;
 public:
 	double barrier;
 	double rebate;
-	string optType;
 };
