@@ -67,12 +67,22 @@ void exercise2(void)
 
 void exercise3(void)
 {
-	std::cout<<"Exercise 3";
+	std::cout<<"Exercise 3"<<std::endl;
+	EuropeanOption newOption;
+	std::cout<< newOption.Vega();
+
 }
 
 void exercise4(void)
 {
-	std::cout<<"Exercise 4";
+	std::cout<<"Exercise 4"<<std::endl;
+	BarrierOption option;
+	option.barrier = 125;
+	option.barrierType=1;
+	option.rebate = 10;
+
+	double price = option.Price();
+	std::cout<< price;
 }
 int main () 
 {
@@ -92,7 +102,7 @@ int main ()
 	default : std::cout<< "some error happened";
 		break;
 	}*/
-	exercise2();
+	exercise3();
 	return 0;
 	
 }

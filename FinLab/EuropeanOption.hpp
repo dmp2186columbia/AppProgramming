@@ -4,26 +4,31 @@
 using std::string;
 class EuropeanOption
 {
-
 private:
-	void init(); // default values
-	void copy(const EuropeanOption	&opt2);
 	
-	double	CallPrice() const;
-	double	PutPrice() const;
-	double	CallDelta() const;
-	double	PutDelta() const;
-	double	CallGamma() const;
-	double	PutGamma() const;
-	double  CallTheta() const;
-	double  PutTheta() const;
-	double  CallVega() const;
-	double  PutVega() const;
-	double  CallRho() const;
-	double  PutRho() const;
+	virtual void init(); // default values
+	void copy(const EuropeanOption	&opt2);
+	double	virtual CallPrice() const;
+	double	virtual PutPrice() const;
+	double	virtual CallDelta() const;
+	double	virtual PutDelta() const;
+	double	virtual CallGamma() const;
+	double	virtual PutGamma() const;
+	double  virtual CallTheta() const;
+	double  virtual PutTheta() const;
+	double  virtual CallVega() const;
+	double  virtual PutVega() const;
+	double  virtual CallRho() const;
+	double  virtual PutRho() const;
+	double getProb() const;
+	double getDelta_t() const;
+	double getUp() const;
 	
 
 public:
+	static const int iteration = 10000;
+	static const int steps = 1000;
+
 	double r; //discount rate
 	double sigma; //vol
 	double K; //strike
@@ -49,12 +54,33 @@ public:
 	double Rho()   const;
 
 	void toggle();
-	void print();
+	void print() const;
 };
 
-class EuropeanBarrierOption : public EuropeanOption
+class BarrierOption : public EuropeanOption
 {
+private:
+	void init();
+
+	double	virtual CallPrice() const;
+	
+	/*double	virtual PutPrice() const;
+	double	virtual CallDelta() const;
+	double	virtual PutDelta() const;
+	double	virtual CallGamma() const;
+	double	virtual PutGamma() const;
+	double  virtual CallTheta() const;
+	double  virtual PutTheta() const;
+	double  virtual CallVega() const;
+	double  virtual PutVega() const;
+	double  virtual CallRho() const;
+	double  virtual PutRho() const;*/
+
 public:
+	BarrierOption();
 	double barrier;
 	double rebate;
+
+	short barrierType; //1: up-and-out 2: down-and-out
+
 };
