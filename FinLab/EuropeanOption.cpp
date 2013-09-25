@@ -50,42 +50,48 @@ double EuropeanOption::CallGamma() const
 
 double EuropeanOption::PutGamma() const
 {
-	return 0;
+	return CallGamma();
 }
 
 double EuropeanOption::CallTheta() const
 {
-	return 0;
+	double temp1=(-U*NormDist::pdf(getd1())*sigma*exp((b-r)*T))/(2*sqrt(T));
+	double temp2=(b-r)*U*NormDist::cdf(getd1())*exp((b-r)*T)-r*K*exp((b-r)*T)*NormDist::cdf(getd2());
+	return temp1+temp2;
 }
 
 double EuropeanOption::PutTheta() const
 {
-	return 0;
+	double temp1=(-U*NormDist::pdf(getd1())*sigma*exp((b-r)*T))/(2*sqrt(T));
+	double temp2=-((b-r)*U*NormDist::cdf(-getd1())*exp((b-r)*T))+r*K*exp((b-r)*T)*NormDist::cdf(-getd2());
+	return temp1+temp2;
 }
 
 double EuropeanOption::CallVega() const
 {
-
+	return exp((b-r)*T)*U*sqrt(T)*NormDist::pdf(getd1());
+	/*
 	double temp = sigma*sqrt(T);
 	double d1 = (log(U/K) + (b +(sigma*sigma)*0.5)*T)/temp;
 	double q = getProb();
 
 	return exp(-q*T)*U*sqrt(T)*NormDist::cdf(d1);
+	*/
 }
 
 double EuropeanOption::PutVega() const
 {
-	return 0;
+	return CallVega();
 }
 
 double EuropeanOption::CallRho() const
 {
-	return 0;
+	return K*T*exp(-r*T)*NormDist::cdf(getd2());
 }
 
 double EuropeanOption::PutRho() const
 {
-	return 0;
+	return -K*T*exp(-r*T)*NormDist::cdf(-getd2());
 }
 
 void EuropeanOption::init()
