@@ -12,8 +12,7 @@ double EuropeanOption::CallPrice()	const
 	double tmp = sigma * sqrt(T);
 	double d1 = (log(U/K)) + (b + (sigma*sigma)/0.5 * T)/tmp;
 	double d2 = d1 - tmp;
-
-	return (K * exp(-r*T) * NormDist::cdf(-d2)) - (U * exp(b-r) * T) * NormDist::cdf(-d1);
+	return U * exp((b-r)*T) * NormDist::cdf(d1) - (K * exp(-r*T) * NormDist::cdf(d2)); //changed
 }
 
 double EuropeanOption::PutPrice()	const
@@ -22,15 +21,14 @@ double EuropeanOption::PutPrice()	const
 	double d1 = (log(U/K)) + (b + (sigma*sigma)/0.5 * T)/tmp;
 	double d2 = d1 - tmp;
 
-	return 0; //Not Correct!!	
+	return (K * exp(-r*T) * NormDist::cdf(-d2)) - U  * exp((b-r)*T) * NormDist::cdf(-d1); // corrected	
 }
 
 double EuropeanOption::CallDelta() const
 {
 	double temp = sigma*sqrt(T);
 	double d1 = (log(U/K) + (b +(sigma*sigma)*0.5)*T)/temp;
-
-	return exp((b-r)*T)*NormDist::cdf(d1);
+	return /*exp((b-r)*T)*/ NormDist::cdf(d1);
 }
 
 

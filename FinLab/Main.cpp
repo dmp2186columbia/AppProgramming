@@ -5,6 +5,8 @@
 #include <fstream>;
 #include <string>;
 #define EVER ;; 
+
+
 void exercise1(void)
 {
 	std::cout<<"Exercise 1"<<std::endl;
