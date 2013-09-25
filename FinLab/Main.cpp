@@ -2,7 +2,8 @@
 #include "EuropeanOption.hpp";
 #include <iostream>;
 #include <math.h>;
-
+#include <fstream>
+#include <string>
 
 void exercise1(void)
 {
@@ -65,13 +66,88 @@ void exercise2(void)
 	option.r=0.05;
 }
 
-void exercise3(void)
+
+void exercise3_a(void)
 {
-	std::cout<<"Exercise 3"<<std::endl;
-	EuropeanOption newOption;
-	std::cout<< newOption.Vega();
+    EuropeanOption option;
+	double temp;
+    std::cout << "Enter Spot Price:" << std::endl;
+	std::cin >> option.K;
+	
+    std::cout << "Enter Strike Price:" << std::endl;
+    std::cin >> option.K;
+
+    std::cout << "Enter Discount Rate:" << std::endl;
+    std::cin >> option.r;
+
+    double temp1, temp2;
+    std::cout << "Enter Loan Rate:" << std::endl;
+    std::cin >> temp1;
+    std::cout << "Enter Dividend Yield:" << std::endl;
+    std::cin >> temp2;
+    option.b = temp1 - temp2;
+
+    std::cout << "Enter Expiration:" << std::endl;
+    std::cin >> option.T;
+
+    std::cout << "Enter Volatility:" << std::endl;
+    std::cin >> option.sigma;
+
+    std::cout << "Price is " << option.Price() << std::endl;
+    std::cout << "Delta is " << option.Delta() << std::endl;
+    std::cout << "Gamma is " << option.Gamma() << std::endl;
+    std::cout << "Theta is " << option.Theta() << std::endl;
+    std::cout << "Vega is " << option.Vega() << std::endl;
+    std::cout << "Rho is " << option.Rho() << std::endl;
 
 }
+
+
+void exercise3_b(void)
+{
+    std::ifstream file("a.txt");
+    std::string str;
+
+    EuropeanOption option;
+
+    std::cout << "Spot Price:" << std::endl;
+    std::getline(file, str);
+	option.U = atof(str.c_str());
+	
+    std::cout << "Strike Price:" << std::endl;
+	std::getline(file, str);
+    option.K = atof(str.c_str());
+
+    std::cout << "Enter Discount Rate:" << std::endl;
+	std::getline(file, str);
+    option.r = atof(str.c_str());
+    
+    std::cout << "Enter Loan Rate:" << std::endl;
+	std::getline(file, str);
+    double temp1 = atof(str.c_str());
+
+	std::cout << "Enter Dividend Yield:" << std::endl;
+	std::getline(file, str);
+    double temp2 = atof(str.c_str());
+    option.b = temp1 - temp2;
+
+    std::cout << "Enter Expiration:" << std::endl;
+	std::getline(file, str);
+    option.T = atof(str.c_str());
+
+    std::cout << "Enter Volatility:" << std::endl;
+	std::getline(file, str);
+    option.sigma = atof(str.c_str());
+
+   std::cout << "Price is " << option.Price() << std::endl;
+    std::cout << "Delta is " << option.Delta() << std::endl;
+    std::cout << "Gamma is " << option.Gamma() << std::endl;
+    std::cout << "Theta is " << option.Theta() << std::endl;
+    std::cout << "Vega is " << option.Vega() << std::endl;
+    std::cout << "Rho is " << option.Rho() << std::endl;
+	
+}
+
 
 void exercise4(void)
 {
@@ -84,6 +160,11 @@ void exercise4(void)
 	double price = option.Price();
 	std::cout<< price;
 }
+
+
+
+
+
 int main () 
 {
 	/*int select;
@@ -102,7 +183,8 @@ int main ()
 	default : std::cout<< "some error happened";
 		break;
 	}*/
-	exercise3();
+	
+	exercise3_b();
 	return 0;
 	
 }
