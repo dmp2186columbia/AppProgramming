@@ -70,10 +70,18 @@ void exercise2(void)
 void exercise3_a(void)
 {
     EuropeanOption option;
-	double temp;
+	double input;
     std::cout << "Enter Spot Price:" << std::endl;
-	std::cin >> option.K;
+	if (getInput(input))
+	{
+		option.U = getInput(input);
+	}
+	else
+	{
+		return;
+	}
 	
+
     std::cout << "Enter Strike Price:" << std::endl;
     std::cin >> option.K;
 
@@ -161,8 +169,19 @@ void exercise4(void)
 	std::cout<< price;
 }
 
-
-
+bool getInput(double &input)
+{
+	double temp;
+	std::cin >> temp;
+	if (std::cin.fail())
+	{
+		std::cin.clear();
+		std::cout << "Invalid input"<<std::endl;
+		return 0;
+	}
+	input = temp;
+	return 1;
+}
 
 
 int main () 
@@ -180,7 +199,6 @@ int main ()
 	case 2 : exercise2();
 		break;
 	case 3 : 
-		
 		std::cout << "Select (a) or (b):\n";
 		std::cin >> choice;
 		if (choice == "a" || choice == "(a)")
@@ -203,7 +221,6 @@ int main ()
 	}
 	
 	return 0;
-	
 }
 
 
