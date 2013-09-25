@@ -73,18 +73,23 @@ void exercise3_a(void)
 	double temp;
     std::cout << "Enter Spot Price:" << std::endl;
 	std::cin >> option.K;
+	
     std::cout << "Enter Strike Price:" << std::endl;
     std::cin >> option.K;
+
     std::cout << "Enter Discount Rate:" << std::endl;
     std::cin >> option.r;
+
     double temp1, temp2;
     std::cout << "Enter Loan Rate:" << std::endl;
     std::cin >> temp1;
     std::cout << "Enter Dividend Yield:" << std::endl;
     std::cin >> temp2;
     option.b = temp1 - temp2;
+
     std::cout << "Enter Expiration:" << std::endl;
     std::cin >> option.T;
+
     std::cout << "Enter Volatility:" << std::endl;
     std::cin >> option.sigma;
 
@@ -202,21 +207,42 @@ int main ()
 	/*int select;
 	std::cout << "Select an exercise to run (1-4):\n";
 	std::cin >> select;
+
 	switch (select)
 	{
 	case 1 : exercise1();
 		break;
 	case 2 : exercise2();
 		break;
-	case 3 : exercise3();
+	case 3 : 
+		
+		std::cout << "Select (a) or (b):\n";
+		std::cin >> choice;
+		if (choice == "a" || choice == "(a)")
+		{
+			exercise3_a();
+		}
+		else if (choice == "b" || choice == "(b)")
+		{
+			exercise3_b();
+		}
+		else
+		{
+			std::cout<< "Input not recogonized" <<std::endl;
+		}
 		break;
 	case 4 : exercise4();
 		break;
 	default : std::cout<< "some error happened";
 		break;
-	}*/
+	}
 	
 	/*exercise3_b();*/
 	return 0;
 	
 }
+
+
+
+
+
