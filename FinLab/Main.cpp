@@ -72,26 +72,62 @@ void exercise3_a(void)
     EuropeanOption option;
 	double temp;
     std::cout << "Enter Spot Price:" << std::endl;
-	std::cin >> option.K;
-	
+	if (!(std::cin >> temp) || temp < 0.0)
+	{
+		std::cout << "Input not valid" << std::endl;
+		return;
+	}
+	option.U = temp;
+
     std::cout << "Enter Strike Price:" << std::endl;
-    std::cin >> option.K;
+	if (!(std::cin >> temp) || temp < 0.0)
+	{
+		std::cout << "Input not valid" << std::endl;
+		return;
+	}
+    option.K = temp;
 
     std::cout << "Enter Discount Rate:" << std::endl;
-    std::cin >> option.r;
+	if (!(std::cin >> temp) || temp > 1.0 || temp < 0.0)
+	{
+		std::cout << "Input not valid" << std::endl;
+		return;
+	}
+    option.r = temp;
+    
 
     double temp1, temp2;
     std::cout << "Enter Loan Rate:" << std::endl;
-    std::cin >> temp1;
+	if (!(std::cin >> temp1) || temp1 > 1.0 || temp1 < 0.0)
+	{
+		std::cout << "Input not valid" << std::endl;
+		return;
+	}
     std::cout << "Enter Dividend Yield:" << std::endl;
-    std::cin >> temp2;
+    if (!(std::cin >> temp2) || temp2 > 1.0 || temp2 < 0.0)
+	{
+		std::cout << "Input not valid" << std::endl;
+		return;
+	}
+    option.r = temp;
     option.b = temp1 - temp2;
 
     std::cout << "Enter Expiration:" << std::endl;
-    std::cin >> option.T;
+	if (!(std::cin >> temp) || temp < 0.0)
+	{
+		std::cout << "Input not valid" << std::endl;
+		return;
+	}
+    option.T = temp;
+    
 
     std::cout << "Enter Volatility:" << std::endl;
-    std::cin >> option.sigma;
+	if (!(std::cin >> temp))
+	{
+		std::cout << "Input not valid" << std::endl;
+		return;
+	}
+    option.sigma = temp;
 
     std::cout << "Price is " << option.Price() << std::endl;
     std::cout << "Delta is " << option.Delta() << std::endl;
@@ -176,7 +212,27 @@ char menu(void)
 	return temp;
 }
 
-
+void exercise3(void)
+{
+	char select;
+	std::cout<< "Exercise 3, select (a) or (b)" << std::endl;
+	std::cin>> select;
+	if (select == 'a')
+	{
+		exercise3_a();
+		return;
+	}
+	else if (select == 'b')
+	{
+		exercise3_b();
+		return;
+	}
+	else
+	{
+		std::cout << "Invalid Command" << std::endl;
+		return;
+	}
+}
 
 int main () 
 {
@@ -191,8 +247,8 @@ int main ()
 			break;
 		case '2': exercise2();
 			break;
-		/*case '3': exercise3();
-			break;*/
+		case '3': exercise3();
+			break;
 		case '4': exercise4();
 			break;
 		default : std::cout<<"Command not recognized."<<std::endl;
@@ -203,45 +259,11 @@ int main ()
 			std::cout<<"Quiting programm..."<<std::endl;
 			break;
 		}
+		std::cin.clear();
+		std::cin.ignore(100, '\n');
 	}
-	/*int select;
-	std::cout << "Select an exercise to run (1-4):\n";
-	std::cin >> select;
-
-	switch (select)
-	{
-	case 1 : exercise1();
-		break;
-	case 2 : exercise2();
-		break;
-	case 3 : 
-		
-		std::cout << "Select (a) or (b):\n";
-		std::cin >> choice;
-		if (choice == "a" || choice == "(a)")
-		{
-			exercise3_a();
-		}
-		else if (choice == "b" || choice == "(b)")
-		{
-			exercise3_b();
-		}
-		else
-		{
-			std::cout<< "Input not recogonized" <<std::endl;
-		}
-		break;
-	case 4 : exercise4();
-		break;
-	default : std::cout<< "some error happened";
-		break;
-	}
-	
-	/*exercise3_b();*/
 	return 0;
-	
 }
-
 
 
 
