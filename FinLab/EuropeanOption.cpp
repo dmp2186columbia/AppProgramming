@@ -10,7 +10,7 @@ using namespace Stat;
 double EuropeanOption::CallPrice()	const
 {
 	double tmp = sigma * sqrt(T);
-	double d1 = (log(U/K)) + (b + (sigma*sigma)/0.5 * T)/tmp;
+	double d1 = (log(U/K) + (b + (sigma*sigma)/0.5 * T))/tmp;
 	double d2 = d1 - tmp;
 
 	return (K * exp(-r*T) * NormDist::cdf(-d2)) - (U * exp(b-r) * T) * NormDist::cdf(-d1);
