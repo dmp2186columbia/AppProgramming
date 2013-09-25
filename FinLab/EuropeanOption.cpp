@@ -7,42 +7,45 @@
 
 using namespace Stat;
 
-double EuropeanOption::CallPrice()	const
+
+double EuropeanOption::getd1() const
 {
-	double tmp = sigma * sqrt(T);
-	double d1 = (log(U/K) + (b + (sigma*sigma)/0.5 * T))/tmp;
-	double d2 = d1 - tmp;
-	return U * exp((b-r)*T) * NormDist::cdf(d1) - (K * exp(-r*T) * NormDist::cdf(d2)); //changed
+	return (log(U/K) + (b + (sigma*sigma)/0.5) * T)/getTemp();
 }
 
-double EuropeanOption::PutPrice()	const
+double EuropeanOption::getd2() const
 {
-	double tmp = sigma * sqrt(T);
-	double d1 = (log(U/K)) + (b + (sigma*sigma)/0.5 * T)/tmp;
-	double d2 = d1 - tmp;
+	return getd1()-getTemp();
+}
 
-	return (K * exp(-r*T) * NormDist::cdf(-d2)) - U  * exp((b-r)*T) * NormDist::cdf(-d1); // corrected	
+double EuropeanOption::getTemp() const
+{
+	return sigma * sqrt(T);
+}
+
+double EuropeanOption::CallPrice() const
+{
+	return U * exp((b-r)*T) * NormDist::cdf(getd1()) - (K * exp(-r*T) * NormDist::cdf(getd2())); //changed
+}
+
+double EuropeanOption::PutPrice() const
+{
+	return (K * exp(-r*T) * NormDist::cdf(-getd2())) - U  * exp((b-r)*T) * NormDist::cdf(-getd1()); // corrected	
 }
 
 double EuropeanOption::CallDelta() const
 {
-	double temp = sigma*sqrt(T);
-	double d1 = (log(U/K) + (b +(sigma*sigma)*0.5)*T)/temp;
-	return /*exp((b-r)*T)*/ NormDist::cdf(d1);
+	return exp((b-r)*T) * NormDist::cdf(getd1());
 }
-
 
 double EuropeanOption::PutDelta() const
 {
-	double temp = sigma*sqrt(T);
-	double d1 = (log(U/K) + (b +(sigma*sigma)*0.5)*T)/temp;
-
-	return exp((b-r)*T)*NormDist::cdf(d1);//Not correct!!
+	return -exp((b-r)*T)*NormDist::cdf(-getd1());//changed
 }
 
 double EuropeanOption::CallGamma() const
 {
-	return 0;
+	return NormDist::pdf(getd1())*exp((b-r)*T)/(U * getTemp());
 }
 
 double EuropeanOption::PutGamma() const

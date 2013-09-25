@@ -25,6 +25,9 @@ protected:
 	double getProb() const;
 	double getDelta_t() const;
 	double getUp() const;
+	double getd1() const;
+	double getd2() const;
+	double getTemp() const;
 	
 
 public:
