@@ -167,24 +167,41 @@ void exercise4(void)
 
 int main () 
 {
-	/*int select;
+	int select;
+	std::string choice;
+
 	std::cout << "Select an exercise to run (1-4):\n";
 	std::cin >> select;
+
 	switch (select)
 	{
 	case 1 : exercise1();
 		break;
 	case 2 : exercise2();
 		break;
-	case 3 : exercise3();
+	case 3 : 
+		
+		std::cout << "Select (a) or (b):\n";
+		std::cin >> choice;
+		if (choice == "a" || choice == "(a)")
+		{
+			exercise3_a();
+		}
+		else if (choice == "b" || choice == "(b)")
+		{
+			exercise3_b();
+		}
+		else
+		{
+			std::cout<< "Input not recogonized" <<std::endl;
+		}
 		break;
 	case 4 : exercise4();
 		break;
 	default : std::cout<< "some error happened";
 		break;
-	}*/
+	}
 	
-	exercise3_b();
 	return 0;
 	
 }
