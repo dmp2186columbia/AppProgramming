@@ -22,10 +22,7 @@ double EuropeanOption::PutPrice()	const
 	double d1 = (log(U/K)) + (b + (sigma*sigma)/0.5 * T)/tmp;
 	double d2 = d1 - tmp;
 
-	return 0; //Not Correct!!
-
-
-	
+	return 0; //Not Correct!!	
 }
 
 double EuropeanOption::CallDelta() const
@@ -208,7 +205,7 @@ double EuropeanOption::getProb() const
 {
 	double up = getUp();
 	double down = 1/up;
-	return (exp(r*getDelta_t())-down)/(up - down);
+	return (exp((r-b)*getDelta_t())-down)/(up - down); //b is carrying cost
 
 }
 
@@ -221,21 +218,16 @@ double EuropeanOption::getUp() const
 {
 	return exp(sigma*sqrt(getDelta_t()));
 }
+
 /////////////// Barrier options:	
 double BarrierOption::CallPrice() const
 {
-	const int iteration = 100;
-	const int steps = 100;
-	const double delta_t = T/steps;
+	double delta_t = getDelta_t();
 	double Ut;
-	double up = exp(sigma*sqrt(delta_t));
+	double up = getUp();
 	double down = 1/up;
-	double q = (exp(r*delta_t)-down)/(up - down);
+	double q = getProb();
 
-	std::cout << up <<std::endl;
-	std::cout << down <<std::endl;
-	std::cout << q <<std::endl;
-	std::cout << delta_t <<std::endl;
 	double payoff = 0;
 	if (barrierType==1)
 	{
@@ -243,28 +235,14 @@ double BarrierOption::CallPrice() const
 
 		for (int i = 0; i < iteration; i++)
 		{
-			Ut = U;
-			//std::cout << "i"<<i <<std::endl;
+			Ut = U; // start a new simulation. Reset underlying price.
 			for (int j = 0; j < steps; j++)
 			{
-				// get up/down here, then add price by one
-			//	std::cout<<" j: "<< j;
 				double random = (double) rand()/RAND_MAX;
-				if (random < q)
-				{
-					Ut = Ut*up;
-				}
-				else
-				{
-					 Ut = Ut*down; 
-				//std::cout << "Ut is"<<Ut<<std::endl;
-				}
+				(random < q) ? (Ut *=up) : (Ut *= down);
 				if (Ut > barrier)
 				{
 					payoff += rebate;
-					std::cout<<"ut =" << Ut << std::endl;
-					std::cout<<"Current payoff = " << rebate <<std::endl;
-					std::cout << "Total payoff is " << payoff <<std::endl;
 					break;
 				}
 				

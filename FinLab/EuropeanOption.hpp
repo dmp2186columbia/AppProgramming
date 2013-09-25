@@ -20,14 +20,16 @@ private:
 	double  virtual PutVega() const;
 	double  virtual CallRho() const;
 	double  virtual PutRho() const;
+
+protected:
 	double getProb() const;
 	double getDelta_t() const;
 	double getUp() const;
 	
 
 public:
-	static const int iteration = 10000;
-	static const int steps = 1000;
+	static const int iteration = 1000;
+	static const int steps = 100;
 
 	double r; //discount rate
 	double sigma; //vol

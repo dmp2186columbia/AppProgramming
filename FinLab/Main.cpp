@@ -2,9 +2,9 @@
 #include "EuropeanOption.hpp";
 #include <iostream>;
 #include <math.h>;
-#include <fstream>
-#include <string>
-
+#include <fstream>;
+#include <string>;
+#define EVER ;; 
 void exercise1(void)
 {
 	std::cout<<"Exercise 1"<<std::endl;
@@ -70,18 +70,10 @@ void exercise2(void)
 void exercise3_a(void)
 {
     EuropeanOption option;
-	double input;
+	double temp;
     std::cout << "Enter Spot Price:" << std::endl;
-	if (getInput(input))
-	{
-		option.U = getInput(input);
-	}
-	else
-	{
-		return;
-	}
+	std::cin >> option.K;
 	
-
     std::cout << "Enter Strike Price:" << std::endl;
     std::cin >> option.K;
 
@@ -169,26 +161,50 @@ void exercise4(void)
 	std::cout<< price;
 }
 
-bool getInput(double &input)
+char menu(void)
 {
-	double temp;
-	std::cin >> temp;
-	if (std::cin.fail())
-	{
-		std::cin.clear();
-		std::cout << "Invalid input"<<std::endl;
-		return 0;
-	}
-	input = temp;
-	return 1;
+	std::cout<<"====================================================="<<std::endl;
+	std::cout<<"(1) Run exercise 1"<<std::endl;
+	std::cout<<"(2) Run exercise 2"<<std::endl;
+	std::cout<<"(3) Run exercise 3"<<std::endl;
+	std::cout<<"(4) Run exercise 4"<<std::endl;
+	std::cout<<"(q) Quit"<<std::endl;
+	std::cout<<"Your selection: ";
+	char temp;
+	std::cin>>temp;
+	std::cout<<std::endl;
+	return temp;
 }
+
 
 
 int main () 
 {
-	int select;
-	std::string choice;
-
+	std::cout<<"====================================================="<<std::endl;
+	std::cout<<"====== FINLAB OPTION PRICING PROGRAM VER 0.0.0 ======"<<std::endl;
+	for (EVER)
+	{
+		char selection = menu();
+		switch (selection)
+		{
+		case '1': exercise1();
+			break;
+		case '2': exercise2();
+			break;
+		/*case '3': exercise3();
+			break;*/
+		case '4': exercise4();
+			break;
+		default : std::cout<<"Command not recognized."<<std::endl;
+			break;
+		}
+		if (selection=='q')
+		{
+			std::cout<<"Quiting programm..."<<std::endl;
+			break;
+		}
+	}
+	/*int select;
 	std::cout << "Select an exercise to run (1-4):\n";
 	std::cin >> select;
 
@@ -199,6 +215,7 @@ int main ()
 	case 2 : exercise2();
 		break;
 	case 3 : 
+		
 		std::cout << "Select (a) or (b):\n";
 		std::cin >> choice;
 		if (choice == "a" || choice == "(a)")
@@ -220,7 +237,9 @@ int main ()
 		break;
 	}
 	
+	/*exercise3_b();*/
 	return 0;
+	
 }
 
 
