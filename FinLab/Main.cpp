@@ -140,7 +140,6 @@ bool exercise3_a(void)
 	return true;
 }
 
-
 void exercise3_b(void)
 {
     std::ifstream file("a.txt");
@@ -185,33 +184,6 @@ void exercise3_b(void)
     std::cout << "Rho is " << option.Rho() << std::endl;
 }
 
-void exercise4(void)
-{
-	std::cout<<"Exercise 4"<<std::endl;
-	BarrierOption option;
-	option.barrier = 125;
-	option.barrierType=1;
-	option.rebate = 10;
-
-	double price = option.Price();
-	std::cout<< price;
-}
-
-char menu(void)
-{
-	std::cout<<"====================================================="<<std::endl;
-	std::cout<<"(1) Run exercise 1"<<std::endl;
-	std::cout<<"(2) Run exercise 2"<<std::endl;
-	std::cout<<"(3) Run exercise 3"<<std::endl;
-	std::cout<<"(4) Run exercise 4"<<std::endl;
-	std::cout<<"(q) Quit"<<std::endl;
-	std::cout<<"Your selection: ";
-	char temp;
-	std::cin>>temp;
-	std::cout<<std::endl;
-	return temp;
-}
-
 void exercise3(void)
 {
 	char select;
@@ -238,6 +210,30 @@ void exercise3(void)
 		std::cout << "Invalid Command" << std::endl;
 		return;
 	}
+}
+
+void exercise4(void)
+{
+	std::cout<<"Exercise 4"<<std::endl;
+	BarrierOption option;
+	double price = option.Price();
+	std::cout<< price<<std::endl;
+	std::cout<< option.Delta();
+}
+
+char menu(void)
+{
+	std::cout<<"====================================================="<<std::endl;
+	std::cout<<"(1) Run exercise 1"<<std::endl;
+	std::cout<<"(2) Run exercise 2"<<std::endl;
+	std::cout<<"(3) Run exercise 3"<<std::endl;
+	std::cout<<"(4) Run exercise 4"<<std::endl;
+	std::cout<<"(q) Quit"<<std::endl;
+	std::cout<<"Your selection: ";
+	char temp;
+	std::cin>>temp;
+	std::cout<<std::endl;
+	return temp;
 }
 
 int main () 

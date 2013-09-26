@@ -11,5 +11,4 @@ namespace Stat
 		static double cdf(double x,double mean,double stDev);
 		static double cdf(double x);
 	};
-
 }

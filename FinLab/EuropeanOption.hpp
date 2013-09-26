@@ -30,7 +30,7 @@ protected:
 	double getTemp() const;
 
 public:
-	static const int iteration = 1000;
+	static const int iteration = 10000;
 	static const int steps = 100;
 
 	double r; //discount rate
@@ -65,9 +65,10 @@ class BarrierOption : public EuropeanOption
 {
 private:
 	void init();
-	void StockEvolution(double delta_t, double up, double q, double& endPrice, bool& hitBarrier) const;
-
+	std::pair<double, bool> StockEvolution(double up, double q) const;
+	
 	double virtual CallPrice() const;
+	double virtual CallDelta() const;
 	/*double virtual PutPrice() const;
 	double virtual CallDelta() const;
 	double virtual PutDelta() const;

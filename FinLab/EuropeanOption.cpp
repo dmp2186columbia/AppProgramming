@@ -9,7 +9,7 @@ using namespace Stat;
 
 double EuropeanOption::getd1() const
 {
-	return (log(U/K) + (b + (sigma*sigma)/0.5) * T)/getTemp();
+	return (log(U/K) + (b + (sigma*sigma)*0.5) * T)/getTemp();
 }
 
 double EuropeanOption::getd2() const
@@ -56,12 +56,12 @@ double EuropeanOption::CallTheta() const
 {
 	double temp1=(-U*NormDist::pdf(getd1())*sigma*exp((b-r)*T))/(2*sqrt(T));
 	double temp2=(r-b)*U*NormDist::cdf(getd1())*exp((b-r)*T)-r*K*exp(-r*T)*NormDist::cdf(getd2());
-	return temp1+temp2;
-
+	return (temp1+temp2)/365;
 }
 
 double EuropeanOption::PutTheta() const
 {
+
 	double temp1=(-U*NormDist::pdf(getd1())*sigma*exp((b-r)*T))/(2*sqrt(T));
 	double temp2=(b-r)*U*NormDist::cdf(-getd1())*exp((b-r)*T)+r*K*exp(-r*T)*NormDist::cdf(-getd2());
 	return temp1+temp2;
@@ -198,14 +198,14 @@ void EuropeanOption::toggle()
 
 void EuropeanOption::print() const
 {
-	std::cout<<"S="<< U <<"; K=" << K <<"; T=" << T <<std::endl<< "r=" << r <<"; sigma="<<sigma<<" ;div="<<b<<std::endl;
+	std::cout<<"S="<< U <<"; K=" << K <<"; T=" << T <<std::endl<< "r=" << r <<"; sigma="<<sigma<<" ;carry="<<b<<std::endl;
 }
 
 double EuropeanOption::getProb() const
 {
 	double up = getUp();
 	double down = 1/up;
-	return (exp((r-b)*getDelta_t())-down)/(up - down); //b is carrying cost
+	return (exp(b*getDelta_t())-down)/(up - down); //b is carrying cost
 
 }
 
@@ -219,23 +219,22 @@ double EuropeanOption::getUp() const
 	return exp(sigma*sqrt(getDelta_t()));
 }
 
-void BarrierOption::StockEvolution(double delta_t, double up, double q, double& endPrice, bool& hitBarrier) const
+std::pair<double, bool> BarrierOption::StockEvolution(double up, double q) const
 {
 	double Ut=U;
+	bool hitBarrier = false;
 	for (int i = 0; i < steps; i++)
 	{
 		double random = (double) rand()/RAND_MAX;
 		(random < q) ? (Ut *=up) : (Ut *= (1/up));
+			//std::cout<< "stock price is: " << Ut <<std::endl;
 			if (Ut > barrier)
 			{
 				hitBarrier=true; // stock evolved past barrier, payoff = rebate 
 				break;
 			}
-		if ((Ut > K) && (Ut <= barrier))
-		{
-			endPrice =  Ut;  //Final stock price, after evolution. 
-		}
 	}
+	return std::make_pair(Ut, hitBarrier);
 }
 
 /////////////// Barrier options:	
@@ -247,41 +246,64 @@ double BarrierOption::CallPrice() const
 	double payoff = 0;
 	if (barrierType==1)
 	{
-	//	std::cout << "starting price computation";
-		
 		for (int i = 0; i < iteration; i++)
 		{ //Monte Carlo starts here
-			double endPrice;
-			bool hitBarrier;
-			StockEvolution(delta_t, up, p, endPrice, hitBarrier);
-			if (hitBarrier)
+
+			std::pair<double, bool> outcome =StockEvolution(up, p);
+			if (i % 1000 == 0) std::cout<<".";
+		//	std::cout<<"stock price is "<<outcome.first<<"\t";
+			if (outcome.second) // hit barrier, return rebate
 			{
+			//std::cout<<"rebate is" << rebate<<std::endl;
 				payoff += rebate;
 			}
 			else
 			{
-				payoff += endPrice;
+				double po = outcome.first-K;
+				(po<0) ? (po=0) : (po);
+		//		std::cout<<"outcome is "<<po<<std::endl;
+				payoff += po; // Call: St- K
 			}
 		}
+	/*std::cout<<std::endl;
+	std::cout<<up<<std::endl;
+	std::cout<<delta_t<<std::endl;
+	std::cout<<p<<std::endl;*/
+
 	return payoff/iteration;
 	}
 	else
 		return 0;
 }
 
+
+double BarrierOption::CallDelta() const
+{
+	BarrierOption option1;
+	BarrierOption option2;
+	double delta = 0.01;
+	option2.U = option1.U*(1 + delta);
+
+	return (option2.CallPrice()-option1.CallPrice())/(option1.U*delta);
+}
+
+
+
+
+
 void BarrierOption::init()
 {// Default values, default type = C
 	r = 0.05;
-	sigma=0.2;
-	K = 120;
-	T = 1;
-	U = 100;
-	b = -0.02;
+	sigma=0.20;
+	K = 100;
+	T = 1.0;
+	U = 120;
+	b = 0.03;
 
 	optType = "C";
 
 	barrier = 150;
-	rebate = 10;
+	rebate = 0;
 	barrierType =1;
 	
 }
