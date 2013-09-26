@@ -68,8 +68,7 @@ void exercise2(void)
 	option.r=0.05;
 }
 
-
-void exercise3_a(void)
+bool exercise3_a(void)
 {
     EuropeanOption option;
 	double temp;
@@ -77,7 +76,7 @@ void exercise3_a(void)
 	if (!(std::cin >> temp) || temp < 0.0)
 	{
 		std::cout << "Input not valid" << std::endl;
-		return;
+		return false;
 	}
 	option.U = temp;
 
@@ -85,7 +84,7 @@ void exercise3_a(void)
 	if (!(std::cin >> temp) || temp < 0.0)
 	{
 		std::cout << "Input not valid" << std::endl;
-		return;
+		return false;
 	}
     option.K = temp;
 
@@ -93,7 +92,7 @@ void exercise3_a(void)
 	if (!(std::cin >> temp) || temp > 1.0 || temp < 0.0)
 	{
 		std::cout << "Input not valid" << std::endl;
-		return;
+		return false;
 	}
     option.r = temp;
     
@@ -103,22 +102,21 @@ void exercise3_a(void)
 	if (!(std::cin >> temp1) || temp1 > 1.0 || temp1 < 0.0)
 	{
 		std::cout << "Input not valid" << std::endl;
-		return;
+		return false;
 	}
     std::cout << "Enter Dividend Yield:" << std::endl;
     if (!(std::cin >> temp2) || temp2 > 1.0 || temp2 < 0.0)
 	{
 		std::cout << "Input not valid" << std::endl;
-		return;
+		return false;
 	}
-    option.r = temp;
     option.b = temp1 - temp2;
 
     std::cout << "Enter Expiration:" << std::endl;
 	if (!(std::cin >> temp) || temp < 0.0)
 	{
 		std::cout << "Input not valid" << std::endl;
-		return;
+		return false;
 	}
     option.T = temp;
     
@@ -127,17 +125,19 @@ void exercise3_a(void)
 	if (!(std::cin >> temp))
 	{
 		std::cout << "Input not valid" << std::endl;
-		return;
+		return false;
 	}
     option.sigma = temp;
 
-    std::cout << "Price is " << option.Price() << std::endl;
+	// printout
+	option.print();
+	std::cout << "Price is " << option.Price() << std::endl;
     std::cout << "Delta is " << option.Delta() << std::endl;
     std::cout << "Gamma is " << option.Gamma() << std::endl;
     std::cout << "Theta is " << option.Theta() << std::endl;
     std::cout << "Vega is " << option.Vega() << std::endl;
     std::cout << "Rho is " << option.Rho() << std::endl;
-
+	return true;
 }
 
 
@@ -221,7 +221,13 @@ void exercise3(void)
 	std::cin>> select;
 	if (select == 'a')
 	{
-		exercise3_a();
+		for (EVER)
+		{
+			bool finish = exercise3_a();
+			if (finish==true) break;
+			std::cin.clear();
+			std::cin.ignore(100, '\n');
+		}
 		return;
 	}
 	else if (select == 'b')
