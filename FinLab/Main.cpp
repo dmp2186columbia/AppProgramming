@@ -244,10 +244,11 @@ void exercise3(void)
 
 int main () 
 {
-	std::cout<<"====================================================="<<std::endl;
-	std::cout<<"====== FINLAB OPTION PRICING PROGRAM VER 0.0.0 ======"<<std::endl;
+	
 	for (EVER)
 	{
+		std::cout<<"====================================================="<<std::endl;
+		std::cout<<"====== FINLAB OPTION PRICING PROGRAM VER 0.0.0 ======"<<std::endl;
 		char selection = menu();
 		switch (selection)
 		{
@@ -269,6 +270,7 @@ int main ()
 		}
 		std::cin.clear();
 		std::cin.ignore(100, '\n');
+		std::cout<<std::endl;
 	}
 	return 0;
 }
