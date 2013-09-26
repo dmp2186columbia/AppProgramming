@@ -1,3 +1,4 @@
+
 // EuropeanOption.hpp
 #include <string>;
 using std::string;
@@ -7,7 +8,6 @@ private:
 	
 	virtual void init(); // default values
 	void copy(const EuropeanOption	&opt2);
-	
 	double	virtual CallPrice() const;
 	double	virtual PutPrice() const;
 	double	virtual CallDelta() const;
@@ -20,14 +20,19 @@ private:
 	double  virtual PutVega() const;
 	double  virtual CallRho() const;
 	double  virtual PutRho() const;
-
+	double virtual StockEvolution(double delta_t, double up, double q) const;	
 protected:
 	double getProb() const;
 	double getDelta_t() const;
-	double getUp() const	;
+	double getUp() const;
+<<<<<<< HEAD
 	double getd1() const;
 	double getd2() const;
 	double getTemp() const;
+	
+=======
+
+>>>>>>> Made some small modification
 
 public:
 	static const int iteration = 1000;
@@ -65,20 +70,21 @@ class BarrierOption : public EuropeanOption
 {
 private:
 	void init();
-	void StockEvolution(double delta_t, double up, double q, double& endPrice, bool& hitBarrier) const;
 
-	double virtual CallPrice() const;
-	/*double virtual PutPrice() const;
-	double virtual CallDelta() const;
-	double virtual PutDelta() const;
-	double virtual CallGamma() const;
-	double virtual PutGamma() const;
-	double virtual CallTheta() const;
-	double virtual PutTheta() const;
-	double virtual CallVega() const;
-	double virtual PutVega() const;
-	double virtual CallRho() const;
-	double virtual PutRho() const;*/
+	double	virtual CallPrice() const;
+	void BarrierOption::StockEvolution(double delta_t, double up, double q, double& endPrice, bool& hitBarrier) const
+
+	/*double	virtual PutPrice() const;
+	double	virtual CallDelta() const;
+	double	virtual PutDelta() const;
+	double	virtual CallGamma() const;
+	double	virtual PutGamma() const;
+	double  virtual CallTheta() const;
+	double  virtual PutTheta() const;
+	double  virtual CallVega() const;
+	double  virtual PutVega() const;
+	double  virtual CallRho() const;
+	double  virtual PutRho() const;*/
 
 public:
 	BarrierOption();

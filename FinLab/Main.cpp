@@ -177,15 +177,13 @@ void exercise3_b(void)
 	std::getline(file, str);
     option.sigma = atof(str.c_str());
 
-   std::cout << "Price is " << option.Price() << std::endl;
+	std::cout << "Price is " << option.Price() << std::endl;
     std::cout << "Delta is " << option.Delta() << std::endl;
     std::cout << "Gamma is " << option.Gamma() << std::endl;
     std::cout << "Theta is " << option.Theta() << std::endl;
     std::cout << "Vega is " << option.Vega() << std::endl;
     std::cout << "Rho is " << option.Rho() << std::endl;
-	
 }
-
 
 void exercise4(void)
 {
