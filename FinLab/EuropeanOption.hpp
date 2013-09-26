@@ -20,6 +20,7 @@ private:
 	double  virtual PutVega() const;
 	double  virtual CallRho() const;
 	double  virtual PutRho() const;
+	double virtual StockEvolution(double delta_t, double up, double q) const;	
 
 protected:
 	double getProb() const;
@@ -28,7 +29,7 @@ protected:
 	double getd1() const;
 	double getd2() const;
 	double getTemp() const;
-	
+
 
 public:
 	static const int iteration = 1000;
@@ -68,7 +69,8 @@ private:
 	void init();
 
 	double	virtual CallPrice() const;
-	
+	void BarrierOption::StockEvolution(double delta_t, double up, double q, double& endPrice, bool& hitBarrier) const
+
 	/*double	virtual PutPrice() const;
 	double	virtual CallDelta() const;
 	double	virtual PutDelta() const;

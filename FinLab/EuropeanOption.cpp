@@ -7,6 +7,11 @@
 
 using namespace Stat;
 
+double EuropeanOption::CallPrice()	const
+{
+	double tmp = sigma * sqrt(T);
+	double d1 = (log(U/K)) + (b + (sigma*sigma)/0.5 * T)/tmp;
+	double d2 = d1 - tmp;
 
 double EuropeanOption::getd1() const
 {
@@ -17,6 +22,9 @@ double EuropeanOption::getd2() const
 {
 	return getd1()-getTemp();
 }
+	double tmp = sigma * sqrt(T);
+	double d1 = (log(U/K)) + (b + (sigma*sigma)/0.5 * T)/tmp;
+	double d2 = d1 - tmp;
 
 double EuropeanOption::getTemp() const
 {
@@ -58,6 +66,7 @@ double EuropeanOption::CallTheta() const
 	double temp1=(-U*NormDist::pdf(getd1())*sigma*exp((b-r)*T))/(2*sqrt(T));
 	double temp2=(b-r)*U*NormDist::cdf(getd1())*exp((b-r)*T)-r*K*exp((b-r)*T)*NormDist::cdf(getd2());
 	return temp1+temp2;
+
 }
 
 double EuropeanOption::PutTheta() const
@@ -69,14 +78,12 @@ double EuropeanOption::PutTheta() const
 
 double EuropeanOption::CallVega() const
 {
-	return exp((b-r)*T)*U*sqrt(T)*NormDist::pdf(getd1());
-	/*
+
 	double temp = sigma*sqrt(T);
 	double d1 = (log(U/K) + (b +(sigma*sigma)*0.5)*T)/temp;
 	double q = getProb();
 
 	return exp(-q*T)*U*sqrt(T)*NormDist::cdf(d1);
-	*/
 }
 
 double EuropeanOption::PutVega() const
@@ -226,6 +233,26 @@ double EuropeanOption::getUp() const
 	return exp(sigma*sqrt(getDelta_t()));
 }
 
+
+void BarrierOption::StockEvolution(double delta_t, double up, double q, double& endPrice, bool& hitBarrier) const
+{
+	double Ut=U;
+	for (int i = 0; i < steps; i++)
+	{
+		double random = (double) rand()/RAND_MAX;
+		(random < q) ? (Ut *=up) : (Ut *= (1/up));
+			if (Ut > barrier)
+			{
+				hitBarrier=true; // stock evolved past barrier, payoff = rebate 
+				break;
+			}
+		if ((Ut > K) && (Ut <= barrier))
+		{
+			endPrice =  Ut;  //Final stock price, after evolution. 
+		}
+	}
+}
+
 /////////////// Barrier options:	
 double BarrierOption::CallPrice() const
 {
@@ -239,27 +266,10 @@ double BarrierOption::CallPrice() const
 	if (barrierType==1)
 	{
 	//	std::cout << "starting price computation";
-
+		
 		for (int i = 0; i < iteration; i++)
-		{
-			Ut = U; // start a new simulation. Reset underlying price.
-			for (int j = 0; j < steps; j++)
-			{
-				double random = (double) rand()/RAND_MAX;
-				(random < q) ? (Ut *=up) : (Ut *= down);
-				if (Ut > barrier)
-				{
-					payoff += rebate;
-					break;
-				}
-				
-			}
-			if ((Ut > K) && (Ut <= barrier ))
-			{
-				payoff += (Ut - K);
-				std::cout<< "current payoff = " <<(Ut-K) << std::endl;
-				std::cout << "Ut is"<<Ut << " and total payoff is " << payoff <<std::endl;
-			}
+		{ //Monte Carlo starts here
+			
 		}
 
 		return payoff/iteration;
@@ -288,6 +298,9 @@ void BarrierOption::init()
 }
 
 BarrierOption::BarrierOption()
-{//Set default, type = Call
+{//Set default, type = Call, barrierType = Up Out (1)
 	init();
 }
+
+
+
