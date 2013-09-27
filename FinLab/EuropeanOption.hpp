@@ -32,7 +32,7 @@ protected:
 public:
 	static const int iteration = 10000;
 	static const int steps = 100;
-
+	static const int tradingdays =252;
 	double r; //discount rate
 	double sigma; //vol
 	double K; //strike
@@ -58,7 +58,7 @@ public:
 	double Rho()   const;
 
 	void toggle();
-	void print() const;
+	void virtual print() const;
 };
 
 class BarrierOption : public EuropeanOption
@@ -88,4 +88,5 @@ public:
 
 	short barrierType; //1: up-and-out 2: down-and-out
 
+	void virtual print() const;
 };
